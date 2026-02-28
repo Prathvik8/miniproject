@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express=require('express');
 const app=express();
 const userModel=require("./models/user");
@@ -5,11 +7,19 @@ const postModel=require("./models/post")
 const cookieParser=require("cookie-parser");
 const bcrypt=require("bcrypt");
 const jwt = require('jsonwebtoken');
+const crypto=require("crypto");
+const path=require("path")
+
+const upload = require('./config/multerconfig');
+
 
 app.set("view engine","ejs");
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
+app.use(express.static(path.join(__dirname,"public")))
 app.use(cookieParser());
+
+
 
 
 app.get("/",function(req,res){
@@ -19,6 +29,25 @@ app.get("/",function(req,res){
 app.get("/register",function(req,res){
     res.render("index");
 });
+
+
+app.get("/profile/upload",function(req,res){
+    
+    res.render("profileupload");
+   
+
+})
+
+app.post("/upload",isLoggedIn,upload.single("image"),async function(req,res){
+    let user=await userModel.findOne({email:req.user.email});
+    user.profilepic=req.file.filename;
+    await user.save()
+    res.redirect("/profile")
+   
+
+})
+
+
 app.get("/login",function(req,res){
     res.render("login");
 });
@@ -49,7 +78,7 @@ app.get("/edit/:id",isLoggedIn,async function(req,res){
 })
 
 app.post("/update/:id",isLoggedIn,async function(req,res){
-   let post= await postModel.findOneAnd({_id:req.params.id},{content:req.body.content})
+   let post= await postModel.findOneAndUpdate({_id:req.params.id},{content:req.body.content})
    res.redirect("/profile");
 })
 
@@ -87,7 +116,7 @@ app.post("/register",async function(req,res){
             age,
             username
         });
-        let token =jwt.sign({email,username,userid:CreatedUser._id},"pppp");
+        let token =jwt.sign({email,username,userid:CreatedUser._id},process.env.JWT_SECRET);
         res.cookie("token",token);
         return res.send("Registered")
      });
@@ -102,7 +131,7 @@ app.post("/login",async function(req,res){
     }
    bcrypt.compare(password,user.password, function(err,result){
      if(result) {
-      let token =jwt.sign({email,userid: user._id},"pppp");
+      let token =jwt.sign({email,userid: user._id},process.env.JWT_SECRET);
         res.cookie("token",token);
         res.status(200).redirect("/profile")
     
@@ -122,7 +151,7 @@ function isLoggedIn(req,res,next){
     if(req.cookies.token === "")
         return res.redirect("login")
     else{
-        let data=jwt.verify(req.cookies.token,"pppp")
+        let data=jwt.verify(req.cookies.token,process.env.JWT_SECRET)
         req.user=data;
     }
     next();

@@ -1,0 +1,97 @@
+Full Stack Social Media App
+🚀 Overview
+
+A full-stack social media web application built using Node.js, Express, MongoDB, and EJS.
+It allows users to register, authenticate securely, create posts, like/unlike content, and manage their profiles including profile picture uploads.
+
+🛠️ Tech Stack
+Backend: Node.js, Express.js
+Database: MongoDB (Mongoose)
+Frontend: EJS, HTML, CSS
+Authentication: JWT (JSON Web Tokens)
+Security: bcrypt for password hashing
+File Upload: Multer
+Other: Cookie-parser, dotenv
+
+✨ Features
+🔐 Authentication System
+User registration with hashed passwords (bcrypt)
+Secure login using JWT stored in cookies
+Protected routes using middleware
+👤 User Profile
+View user profile with posts
+Upload and update profile picture
+📝 Post Management
+Create new posts
+Edit existing posts
+Delete functionality (if added later, mention honestly)
+❤️ Like System
+Like and unlike posts
+Real-time like toggle logic
+
+                      
+📂 File Upload
+Upload profile images using Multer
+Store and serve images from server
+📁 Project Structure
+├── models/
+│   ├── user.js
+│   └── post.js
+├── config/
+│   └── multerconfig.js
+├── public/
+├── views/
+├── .env
+├── app.js
+
+                   🔗 API Routes
+🏠 Public Routes
+Method	Route	        Description
+GET	/	        Render home/landing page
+GET	/register	Show registration page
+POST	/register	Register new user
+GET	/login	        Show login page
+POST	/login	        Authenticate user
+                      
+🔐 Protected Routes (Require Login)
+Method	Route	        Description
+GET	/profile	View user profile with posts
+GET	/logout	        Logout user
+                      
+📝 Post Routes
+Method	Route	        Description
+POST	/post	        Create a new post
+GET	/edit/:id	Show edit post page
+POST	/update/:id	Update post content
+                      
+❤️ Like System
+Method	Route	        Description
+GET	/like/:id	Like or unlike a post
+                      
+🖼️ Profile & Upload
+Method	Route	          Description
+GET	/profile/upload	  Show profile upload page
+POST	/upload	          Upload profile picture
+                      
+⚙️ Installation & Setup
+Clone the repository
+git clone https://github.com/your-username/social-media-app.git
+cd social-media-app
+Install dependencies
+npm install
+Create a .env file
+JWT_SECRET=your_secret_key
+Run the server
+node app.js
+Open in browser
+http://localhost:3000
+                      
+🔑 Key Learnings
+Implemented authentication using JWT and cookies
+Built RESTful routes with Express
+Managed relationships between users and posts in MongoDB
+Handled file uploads using Multer
+Developed server-rendered UI using EJS
+
+👤 Author::Prathvik
+GitHub: https://github.com/Prathvik8

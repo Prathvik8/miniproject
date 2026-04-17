@@ -75,7 +75,7 @@ POST	/upload	          Upload profile picture
                       
 ⚙️ Installation & Setup
 Clone the repository
-git clone https://github.com/your-username/social-media-app.git
+git clone https://github.com/Prathvik8/miniproject
 cd social-media-app
 Install dependencies
 npm install
